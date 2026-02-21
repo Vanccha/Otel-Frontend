@@ -450,11 +450,11 @@
 <!-- Mobile menu -->
 <div id="mobile-menu" class="fixed top-0 left-0 right-0 bottom-0 z-90 flex-col items-center justify-center gap-10 text-center" style="z-index:95; background:var(--dark);">
   <button id="menu-close" class="absolute top-6 right-6 text-3xl leading-none" style="color:var(--muted)">&times;</button>
-  <a href="#rooms" class="nav-link block text-xl" onclick="closeMobile()">Odalar</a>
-  <a href="#services" class="nav-link block text-xl" onclick="closeMobile()">Hizmetler</a>
-  <a href="#gallery" class="nav-link block text-xl" onclick="closeMobile()">Galeri</a>
-  <a href="#contact" class="nav-link block text-xl" onclick="closeMobile()">İletişim</a>
-  <a href="#contact" class="nav-btn inline-block mt-4" onclick="closeMobile()">Rezervasyon</a>
+  <a href="#rooms" class="nav-link block text-xl">Odalar</a>
+  <a href="#services" class="nav-link block text-xl">Hizmetler</a>
+  <a href="#gallery" class="nav-link block text-xl">Galeri</a>
+  <a href="#contact" class="nav-link block text-xl">İletişim</a>
+  <a href="#contact" class="nav-btn inline-block mt-4">Rezervasyon</a>
 </div>
 
 <!-- ── HERO ───────────────────────────────────── -->
@@ -471,7 +471,7 @@
       <a href="#contact" class="btn-outline">Rezervasyon Yap</a>
     </div>
   </div>
-  <div class="hero-scroll" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+  <div class="hero-scroll" id="hero-scroll-btn">
     <div class="scroll-line"></div>
     <span>Keşfet</span>
   </div>
@@ -834,7 +834,7 @@
     document.getElementById('chat-close-btn').addEventListener('click', toggleChat);
 
     // Hero scroll
-    const heroScrollBtn = document.querySelector('.hero-scroll');
+    const heroScrollBtn = document.getElementById('hero-scroll-btn');
     if (heroScrollBtn) {
       heroScrollBtn.addEventListener('click', () => {
         document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
