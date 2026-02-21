@@ -779,7 +779,7 @@
 </footer>
 
 <!-- ── CHATBOT FAB ──────────────────────────────── -->
-<button class="fab-btn" id="fab" aria-label="Canlı Destek" onclick="toggleChat()">
+<button class="fab-btn" id="fab" aria-label="Canlı Destek">
   <svg id="fab-icon-chat" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
   </svg>
@@ -791,7 +791,7 @@
 <div class="chat-window" id="chat-window">
   <div class="chat-header">
     <div class="chat-header-title">Azure Horizon Asistan</div>
-    <button class="chat-close" onclick="toggleChat()" aria-label="Kapat">&times;</button>
+    <button class="chat-close" id="chat-close-btn" aria-label="Kapat">&times;</button>
   </div>
   <iframe
     id="chat-iframe"
@@ -802,36 +802,71 @@
 </div>
 
 <!-- ── SCRIPTS ─────────────────────────────────── -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
 
-  const mobileMenu = document.getElementById('mobile-menu');
-  document.getElementById('menu-toggle').addEventListener('click', () => {
-    mobileMenu.classList.add('open');
-  });
-  document.getElementById('menu-close').addEventListener('click', closeMobile);
-  function closeMobile() { mobileMenu.classList.remove('open'); }
-
-  let chatOpen = false;
-  function toggleChat() {
-    chatOpen = !chatOpen;
-    document.getElementById('chat-window').classList.toggle('open', chatOpen);
-    document.getElementById('fab-icon-chat').style.display = chatOpen ? 'none' : 'block';
-    document.getElementById('fab-icon-close').style.display = chatOpen ? 'block' : 'none';
-  }
-
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    // NAV scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
     });
-  }, { threshold: 0.12 });
-  reveals.forEach(r => observer.observe(r));
 
-  function handleForm(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    btn.textCont
+    // Mobile menu
+    const mobileMenu = document.getElementById('mobile-menu');
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      mobileMenu.classList.add('open');
+    });
+    document.getElementById('menu-close').addEventListener('click', closeMobile);
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+    document.querySelectorAll('#mobile-menu a').forEach(a => {
+      a.addEventListener('click', closeMobile);
+    });
+
+    // Chatbot FAB
+    let chatOpen = false;
+    function toggleChat() {
+      chatOpen = !chatOpen;
+      document.getElementById('chat-window').classList.toggle('open', chatOpen);
+      document.getElementById('fab-icon-chat').style.display = chatOpen ? 'none' : 'block';
+      document.getElementById('fab-icon-close').style.display = chatOpen ? 'block' : 'none';
+    }
+    document.getElementById('fab').addEventListener('click', toggleChat);
+    document.getElementById('chat-close-btn').addEventListener('click', toggleChat);
+
+    // Hero scroll
+    const heroScrollBtn = document.querySelector('.hero-scroll');
+    if (heroScrollBtn) {
+      heroScrollBtn.addEventListener('click', () => {
+        document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Form handler
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        btn.textContent = 'Gönderiliyor...';
+        setTimeout(() => {
+          btn.textContent = '✓ Gönderildi';
+          document.getElementById('form-success').classList.remove('hidden');
+          e.target.reset();
+        }, 1200);
+      });
+    }
+
+  });
+</script>
+
+</body>
+</html>
